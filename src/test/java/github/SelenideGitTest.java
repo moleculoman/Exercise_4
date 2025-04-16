@@ -23,7 +23,18 @@ public class SelenideGitTest {
             $("#wiki-tab").shouldBe(visible).click(); //самый быстрый и точный вариант поиска
             //$("div").$$("a").findBy(text("Wiki")).click(); //поиск по всем тегам А - медленный и зависимый от обстоятельств (доп. вариант)
             $$("a.internal.present").findBy(text("Soft assertions")).shouldBe(visible).click(); //проверка на наличие вкладки
-            $("div").shouldHave(partialTextCaseSensitive("Using JUnit5 extend test class:")); // проверка содержимого вкладки
+            $("div").shouldHave((text(
+                    "@ExtendWith({SoftAssertsExtension.class}) class Tests {\n" +
+                            "  @Test\n" +
+                            "  void test() {\n" +
+                            "    Configuration.assertionMode = SOFT;\n" +
+                            "    open(\"page.html\");\n" +
+                            "    $(\"#first\").should(visible).click();\n" +
+                            "    $(\"#second\").should(visible).click();\n" +
+                            "  }\n" +
+                            "}"
+            ))); // проверка содержимого вкладки
+
 
     }
 }
